@@ -132,14 +132,13 @@ class DoctrineORMController
      *         as: 'posts' # So you can use it like {% for post in posts %} in your template.
      * </code>
      *
-     * @param Request $request
      * @param string  $template Template path and file name
      * @param string  $entity   Full class name of entity to list
      * @param array   $options  Additional configuration options. Following options are possible:
      *                          - "as" (Default: "entities") -> can change the key of the result entities.
      * @return Response
      */
-    public function listAction(Request $request, $template, $entity, $options) : Response
+    public function listAction($template, $entity, $options) : Response
     {
         $repository = $this->entityManager->getRepository($entity);
 
@@ -186,16 +185,11 @@ class DoctrineORMController
     public function editAction(Request $request, $template, $entity, $options) : Response
     {
         $repository = $this->entityManager->getRepository($entity);
-        $id = $request->query->get('id');
-        $findOneBy = ['id' => $id];
+        $findOneBy = ['id' => $request->query->get('id')];
         $entity = $repository->findOneBy($findOneBy);
 
         if (null === $entity) {
-            throw new NotFoundHttpException(sprintf(
-                'Entity "%s" with id "%s" not found.',
-                $entity,
-                (string) $id
-            ));
+            throw new NotFoundHttpException(sprintf('Entity "%s" with id "%s" not found.', $entity, (string) $id));
         }
 
         if (array_key_exists('form_class', $options)) {

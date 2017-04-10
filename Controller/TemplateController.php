@@ -45,14 +45,13 @@ class TemplateController
      *       template: 'static/{page}.html.twig' # You can use the placeholder page here
      * </code>
      *
-     * @param Request $request
      * @param string  $template Template path and file name. You can use the "page" parameter here. So you can
      *                          easily put all templates in a single place:
      * @param string  $page     Name of the page (e. g. "about", "imprint", "terms", "privacy").
      * @param array   $options  Additional configuration options. You can access them in Twig via {{ options.* }}.
      * @return Response
      */
-    public function templateAction(Request $request, $template, string $page = null, $options = []) : Response
+    public function templateAction($template, string $page = null, $options = []) : Response
     {
         $response = new Response($this->templateEngine->render(str_replace('{page}', $page, $template), [
             'options' => $options,

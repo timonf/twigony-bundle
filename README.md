@@ -1,6 +1,8 @@
 WIP {{ Twigony FrameworkBundle }}
 =================================
 
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/a20684cb-83aa-486f-8bec-e0a4cd3ae307/mini.png)](https://insight.sensiolabs.com/projects/a20684cb-83aa-486f-8bec-e0a4cd3ae307)
+
 Twigony is inspired by Symfony's [TemplateController](http://symfony.com/doc/3.3/templating/render_without_controller.html).
 Twigony provides default Controller actions for common use cases. You are able to configure Twigony through your
 `routing.yml` file (like Symfony's TemplateController).
