@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="twigony.automatic_form_builder" class="Twigony\Bundle\FrameworkBundle\Form\AutomaticFormBuilder">
+            <argument type="service" id="form.factory" />
+        </service>
+        <service id="twigony.orm_controller" class="Twigony\Bundle\FrameworkBundle\Controller\DoctrineORMController">
+            <argument type="service" id="twigony.automatic_form_builder" />
+            <argument type="service" id="templating" />
+            <argument type="service" id="router" />
+            <argument type="service" id="form.factory" />
+            <argument type="service" id="session" />
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+        </service>
+        <service id="twigony.template_controller" class="Twigony\Bundle\FrameworkBundle\Controller\TemplateController">
+            <argument type="service" id="templating" />
+        </service>
+    </services>
+</container>
