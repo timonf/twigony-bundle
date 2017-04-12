@@ -16,7 +16,7 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
-class TwigonyFrontendExtension extends Extension
+class TwigonyFrameworkExtension extends Extension
 {
     /**
      * {@inheritdoc}
