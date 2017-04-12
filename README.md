@@ -56,4 +56,48 @@ class AppKernel extends Kernel
 Usage
 -----
 
-TODO: Add example routing configurations here
+### Multiple static pages (TemplateController)
+
+1.  Create two or more Twig templates (like `app/views/info/hello.html.twig` and `app/views/info/about.html.twig`)
+2.  Extend your `routing.yml`:
+        
+        info_hello:
+          page:
+            path: '/info/{page}'
+            defaults:
+              _controller: 'TwigonyFrameworkBundle:Default:page'
+              template:    'info/{page}.html.twig'
+
+
+### List entities (DoctrineORMController)
+
+1.  [Create an entity](http://symfony.com/doc/3.3/doctrine.html#creating-an-entity-class)
+    or use an existing one (e .g. `src/AppBundle/Entity/Post.php`)
+2.  Create a template (like `app/views/posts/all.html.twig`)
+3.  Extend your `routing.yml`:
+
+        posts:
+          path: '/posts'
+          defaults:
+            _controller: 'TwigonyFrameworkBundle:Default:list'
+            template: 'posts/all.html.twig'
+            entity:   'AppBundle\Entity\Post'
+            options:
+              as: 'posts' # Access variable for your Twig template. You can use it this way `{% for post in posts %}…`
+              form_class: 'AppBundle/Form/YourPostType' # If you want a custom form
+
+### Show single entity (DoctrineORMController)
+
+1.  [Create an entity](http://symfony.com/doc/3.3/doctrine.html#creating-an-entity-class)
+    or use an existing one (e .g. `src/AppBundle/Entity/Post.php`)
+2.  Create a template (like `app/views/posts/show.html.twig`)
+3.  Extend your `routing.yml`:
+
+        show_post:
+          path: '/posts/{id}' # Make sure, you are using "id" as id parameter!
+          defaults:
+            _controller: 'TwigonyFrameworkBundle:Default:view'
+            template: 'posts/show.html.twig'
+            entity:   'AppBundle\Entity\Post'
+            options:
+              as: 'post' # Access variable for your Twig template. You can use it this way `{{ post.title }}…`

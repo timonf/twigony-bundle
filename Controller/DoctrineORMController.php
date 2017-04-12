@@ -4,6 +4,7 @@ namespace Twigony\Bundle\FrameworkBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -132,13 +133,14 @@ class DoctrineORMController
      *         as: 'posts' # So you can use it like {% for post in posts %} in your template.
      * </code>
      *
+     * @param Request $request
      * @param string  $template Template path and file name
      * @param string  $entity   Full class name of entity to list
      * @param array   $options  Additional configuration options. Following options are possible:
      *                          - "as" (Default: "entities") -> can change the key of the result entities.
      * @return Response
      */
-    public function listAction($template, $entity, $options) : Response
+    public function listAction(Request $request, $template, $entity, $options) : Response
     {
         $repository = $this->entityManager->getRepository($entity);
 
@@ -175,7 +177,7 @@ class DoctrineORMController
      *
      * @param Request $request
      * @param string  $template Template path and file name
-     * @param string  $entity   Full class name of entity to list
+     * @param string  $entity   Full class name of entity to edit
      * @param array   $options  Additional configuration options. Following options are possible:
      *                          - "form_class" (optional) -> Custom form. Otherwise form will be created for you
      *                          - "flash" (optional) -> Flash bag message on success (will be added as "notice")
@@ -186,27 +188,14 @@ class DoctrineORMController
     {
         $repository = $this->entityManager->getRepository($entity);
         $findOneBy = ['id' => $request->query->get('id')];
-        $entity = $repository->findOneBy($findOneBy);
 
-        if (null === $entity) {
-            throw new NotFoundHttpException(sprintf('Entity "%s" with id "%s" not found.', $entity, (string) $id));
-        }
-
-        if (array_key_exists('form_class', $options)) {
-            $form = $this->formFactory->create($options['form_class'], $entity);
-        } else {
-            $form = $this->automaticFormBuilder->buildFormByClass($entity);
-        }
-
+        $form = $this->handleForm($options, $repository->findOneBy($findOneBy));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->entityManager->persist($form->getData());
             $this->entityManager->flush();
-
-            if (array_key_exists('flash', $options)) {
-                $this->session->getFlashBag()->add('notice', $options['flash']);
-            }
+            $this->applyFlashMessage($options);
 
             if (array_key_exists('redirect', $options)) {
                 return new RedirectResponse($this->router->generate($options['redirect']), 301);
@@ -221,5 +210,34 @@ class DoctrineORMController
         $this->applyCacheOptions($response, $options);
 
         return $response;
+    }
+
+    /**
+     * @param array  $options Options array, defined in routing files
+     * @param object $entity  Instance of an given entity - or "null"
+     * @return FormInterface
+     */
+    protected function handleForm($options, $entity)
+    {
+        if (null === $entity) {
+            throw new NotFoundHttpException(sprintf('Entity "%s" with id "%s" not found.', $entity, (string) $id));
+        }
+
+        if (array_key_exists('form_class', $options)) {
+            return $this->formFactory->create($options['form_class'], $entity);
+        } else {
+            return $this->automaticFormBuilder->buildFormByClass($entity);
+        }
+    }
+
+    /**
+     * @param array  $options Options array, defined in routing files
+     * @param string $type
+     */
+    protected function applyFlashMessage($options, $type = 'notice')
+    {
+        if (array_key_exists('flash', $options)) {
+            $this->session->getFlashBag()->add($type, $options['flash']);
+        }
     }
 }
