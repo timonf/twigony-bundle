@@ -54,7 +54,13 @@ class TemplateController
      */
     public function templateAction(Request $request, $template, string $page = null, $options = []) : Response
     {
-        $response = new Response($this->templateEngine->render(str_replace('{page}', $page, $template), [
+        $template = str_replace('{page}', $page, $template);
+
+        if (!$this->templateEngine->exists($template)) {
+            throw new NotFoundHttpException(sprintf('Template "%s" could not be found.', $template));
+        }
+
+        $response = new Response($this->templateEngine->render($template, [
             'options' => $options,
             'page' => $page,
         ]));

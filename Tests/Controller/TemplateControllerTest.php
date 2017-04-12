@@ -13,6 +13,7 @@ namespace Twigony\Bundle\FrameworkBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Templating\EngineInterface;
 use Twigony\Bundle\FrameworkBundle\Controller\TemplateController;
 
@@ -29,12 +30,18 @@ class TemplateControllerTest extends TestCase
         $renderMethod = function (string $name, array $parameters) : string {
             return 'Template name: ' . $name . PHP_EOL . (string) print_r($parameters, true);
         };
+        $existsMethod = function (string $name) : bool {
+            return $name !== '404';
+        };
         $templateEngine = $this
             ->getMockBuilder(EngineInterface::class)
             ->getMock();
         $templateEngine->expects($this->any())
             ->method('render')
             ->willReturnCallback($renderMethod);
+        $templateEngine->expects($this->any())
+            ->method('exists')
+            ->willReturnCallback($existsMethod);
 
         $this->controller = new TemplateController(
             $templateEngine
@@ -74,6 +81,13 @@ class TemplateControllerTest extends TestCase
 
         $this->assertFalse($response->isCacheable());
         $this->assertContains('Template name: dontCacheTemplate', $response->getContent());
+    }
+
+    public function testTemplateActionWithNotExistingTemplate()
+    {
+        $this->expectException(NotFoundHttpException::class);
+        $request = Request::create('/someRandomPage', 'GET');
+        $this->controller->templateAction($request, '404');
     }
 
     /**

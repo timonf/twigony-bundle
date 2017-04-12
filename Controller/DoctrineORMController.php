@@ -220,7 +220,7 @@ class DoctrineORMController
     protected function handleForm($options, $entity)
     {
         if (null === $entity) {
-            throw new NotFoundHttpException(sprintf('Entity "%s" with id "%s" not found.', $entity, (string) $id));
+            throw new NotFoundHttpException('Entity not found.');
         }
 
         if (array_key_exists('form_class', $options)) {

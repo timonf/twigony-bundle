@@ -56,7 +56,7 @@ trait CacheTrait
     {
         $maxAge = array_key_exists('maxAge', $options) ? $options['maxAge'] : null;
         $sharedAge = array_key_exists('sharedAge', $options) ? $options['sharedAge'] : null;
-        $private = array_key_exists('private', $options) ? $options['private'] : null;
+        $private = array_key_exists('private', $options) ? boolval($options['private']) : null;
 
         $this->applyCacheParameters($response, $maxAge, $sharedAge, $private);
     }
