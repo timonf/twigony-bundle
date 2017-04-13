@@ -61,12 +61,11 @@ Usage
 1.  Create two or more Twig templates (like `app/views/info/hello.html.twig` and `app/views/info/about.html.twig`)
 2.  Extend your `routing.yml`:
         
-        info_hello:
-          page:
+        info_pages:
             path: '/info/{page}'
             defaults:
-              _controller: 'TwigonyFrameworkBundle:Default:page'
-              template:    'info/{page}.html.twig'
+                _controller: 'twigony.template_controller:templateAction'
+                template:    'info/{page}.html.twig'
 
 
 ### List entities (DoctrineORMController)
@@ -77,14 +76,14 @@ Usage
 3.  Extend your `routing.yml`:
 
         posts:
-          path: '/posts'
-          defaults:
-            _controller: 'TwigonyFrameworkBundle:Default:list'
-            template: 'posts/all.html.twig'
-            entity:   'AppBundle\Entity\Post'
-            options:
-              as: 'posts' # Access variable for your Twig template. You can use it this way `{% for post in posts %}…`
-              form_class: 'AppBundle/Form/YourPostType' # If you want a custom form
+            path: '/posts'
+            defaults:
+                _controller: 'twigony.orm_controller:listAction'
+                template: 'posts/all.html.twig'
+                entity: 'AppBundle\Entity\Post'
+                options:
+                    as: 'posts' # Access variable for your Twig template. You can use it this way `{% for post in posts %}…`
+                    form_class: 'AppBundle/Form/YourPostType' # If you want a custom form
 
 ### Show single entity (DoctrineORMController)
 
@@ -94,10 +93,10 @@ Usage
 3.  Extend your `routing.yml`:
 
         show_post:
-          path: '/posts/{id}' # Make sure, you are using "id" as id parameter!
-          defaults:
-            _controller: 'TwigonyFrameworkBundle:Default:view'
-            template: 'posts/show.html.twig'
-            entity:   'AppBundle\Entity\Post'
-            options:
-              as: 'post' # Access variable for your Twig template. You can use it this way `{{ post.title }}…`
+            path: '/posts/{id}' # Make sure, you are using "id" as id parameter!
+            defaults:
+                _controller: 'twigony.orm_controller:viewAction'
+                template: 'posts/show.html.twig'
+                entity:   'AppBundle\Entity\Post'
+                options:
+                    as: 'post' # Access variable for your Twig template. You can use it this way `{{ post.title }}…`

@@ -41,7 +41,7 @@ class TemplateController
      *   page:
      *     path: '/info/{page}' # You can use the page parameter in template file name, too!
      *     defaults:
-     *       _controller: 'TwigonyFrameworkBundle:Default:page'
+     *       _controller: 'twigony.template_controller:templateAction'
      *       template: 'static/{page}.html.twig' # You can use the placeholder page here
      * </code>
      *

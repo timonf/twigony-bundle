@@ -78,7 +78,7 @@ class DoctrineORMController
      *   show_post:
      *     path: '/post/{id}' # Make sure, you are using "id" as id parameter!
      *     defaults:
-     *       _controller: 'TwigonyFrameworkBundle:Default:view'
+     *       _controller: 'twigony.orm_controller:viewAction'
      *       template: 'post/show.html.twig'
      *       entity:   'AppBundle\Entity\Post'
      *       options:
@@ -126,7 +126,7 @@ class DoctrineORMController
      *   blog_posts:
      *     path: '/'
      *     defaults:
-     *       _controller: 'TwigonyFrameworkBundle:Default:list'
+     *       _controller: 'twigony.orm_controller:listAction'
      *       template: 'post/index.html.twig'
      *       entity:   'AppBundle\Entity\Post'
      *       options:
@@ -144,7 +144,6 @@ class DoctrineORMController
     {
         $repository = $this->entityManager->getRepository($entity);
 
-        // todo: Adding a configurable paginator later.
         $entities = $repository->findAll();
 
         $entitiesKey = array_key_exists('as', $options) ? $options['as'] : 'entities';
@@ -166,7 +165,7 @@ class DoctrineORMController
      *   contact:
      *     path: '/post/{id}/edit'
      *     defaults:
-     *       _controller: 'TwigonyFrameworkBundle:Default:edit'
+     *       _controller: 'twigony.orm_controller:editAction'
      *       template: 'post/show.html.twig'
      *       entity:   'AppBundle\Entity\Comment'
      *       options:
