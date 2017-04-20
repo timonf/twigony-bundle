@@ -159,7 +159,7 @@ class DoctrineORMController
     }
 
     /**
-     * Displays a form for an entity and can save them to database after submitting and validating.
+     * Displays a form for an existing entity and can save them to database after submitting and validating.
      *
      * <code># routing.yml
      *   contact:
@@ -189,6 +189,56 @@ class DoctrineORMController
         $findOneBy = ['id' => $request->query->get('id')];
 
         $form = $this->handleForm($options, $repository->findOneBy($findOneBy));
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->entityManager->persist($form->getData());
+            $this->entityManager->flush();
+            $this->applyFlashMessage($options);
+
+            if (array_key_exists('redirect', $options)) {
+                return new RedirectResponse($this->router->generate($options['redirect']), 301);
+            }
+        }
+
+        $response = new Response($this->templateEngine->render($template, [
+            'options' => $options,
+            'form' => $form->createView(),
+        ]));
+
+        $this->applyCacheOptions($response, $options);
+
+        return $response;
+    }
+
+    /**
+     * Displays a form for an entity and can save them to database after submitting and validating.
+     *
+     * <code># routing.yml
+     *   contact:
+     *     path: '/post/{id}/edit'
+     *     defaults:
+     *       _controller: 'twigony.orm_controller:editAction'
+     *       template: 'post/show.html.twig'
+     *       entity:   'AppBundle\Entity\Comment'
+     *       options:
+     *         form_class: 'AppBundle/Form/CommentType' # If you want a custom form
+     *         flash: 'Comment posted successfully! :)' # Flash message for "notice" bag
+     *         redirect: 'homepage' # Redirect after save was successful
+     * </code>
+     *
+     * @param Request $request
+     * @param string  $template Template path and file name
+     * @param string  $entity   Full class name of entity to edit
+     * @param array   $options  Additional configuration options. Following options are possible:
+     *                          - "form_class" (optional) -> Custom form. Otherwise form will be created for you
+     *                          - "flash" (optional) -> Flash bag message on success (will be added as "notice")
+     *                          - "redirect" (optional) -> Route to redirect after success
+     * @return Response
+     */
+    public function createAction(Request $request, $template, $entity, $options)
+    {
+        $form = $this->handleForm($options, new $entity());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
