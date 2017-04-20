@@ -100,3 +100,9 @@ Usage
                 entity:   'AppBundle\Entity\Post'
                 options:
                     as: 'post' # Access variable for your Twig template. You can use it this way `{{ post.title }}…`
+
+
+Full documentation
+------------------
+
+ * [TemplateController](Resources/doc/TemplateController.md) for static pages (`_controller: twigony.template_controller:templateAction`)
