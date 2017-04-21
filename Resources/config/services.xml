@@ -5,8 +5,11 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="twigony.automatic_form_builder" class="Twigony\Bundle\FrameworkBundle\Form\AutomaticFormBuilder">
+        <service id="twigony.automatic_form_builder" class="Twigony\Bundle\FrameworkBundle\Form\AutomaticFormBuilder" public="false">
             <argument type="service" id="form.factory" />
+        </service>
+        <service id="twigony.mail_factory" class="Twigony\Bundle\FrameworkBundle\Mailer\EmailFactory" public="false">
+            <argument type="service" id="templating" />
         </service>
         <service id="twigony.orm_controller" class="Twigony\Bundle\FrameworkBundle\Controller\DoctrineORMController">
             <argument type="service" id="twigony.automatic_form_builder" />
@@ -14,6 +17,16 @@
             <argument type="service" id="router" />
             <argument type="service" id="form.factory" />
             <argument type="service" id="session" />
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+        </service>
+        <service id="twigony.mailer_controller" class="Twigony\Bundle\FrameworkBundle\Controller\SwiftMailerController">
+            <argument type="service" id="twigony.automatic_form_builder" />
+            <argument type="service" id="templating" />
+            <argument type="service" id="router" />
+            <argument type="service" id="form.factory" />
+            <argument type="service" id="session" />
+            <argument type="service" id="twigony.mail_factory" />
+            <argument type="service" id="mailer" />
             <argument type="service" id="doctrine.orm.default_entity_manager" />
         </service>
         <service id="twigony.template_controller" class="Twigony\Bundle\FrameworkBundle\Controller\TemplateController">

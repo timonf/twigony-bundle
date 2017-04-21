@@ -17,7 +17,8 @@
     "symfony/templating": "~2.8|~3.0",
     "symfony/framework-bundle": "~2.8|~3.0",
     "symfony/property-access": "~2.8|~3.0",
-    "symfony/form": "~2.8|~3.0"
+    "symfony/form": "~2.8|~3.0",
+    "swiftmailer/swiftmailer": "^5.4"
   },
   "require-dev": {
     "phpunit/phpunit": "^6.1",
@@ -35,7 +36,7 @@
   },
   "scripts": {
     "phpunit": "vendor/bin/phpunit",
-    "psr2": "vendor/bin/phpcs --standard=PSR2 Controller DependencyInjection Form Tests Resources TwigonyFrameworkBundle.php",
+    "psr2": "vendor/bin/phpcs --standard=PSR2 Controller DependencyInjection Form Mailer Tests Resources TwigonyFrameworkBundle.php",
     "install-hook": [
       "echo '#!/bin/sh' >> .git/hooks/pre-commit",
       "echo 'composer run phpunit' >> .git/hooks/pre-commit",

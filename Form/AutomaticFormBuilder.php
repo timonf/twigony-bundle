@@ -39,6 +39,8 @@ class AutomaticFormBuilder
      */
     public function buildFormByClass($data) : FormInterface
     {
+        $data = is_object($data) ? get_class($data) : new $data;
+
         $this->formFactory->createBuilder(FormType::class, $data, []);
         $reflectionClass = new \ReflectionClass($data);
         $accessor = PropertyAccess::createPropertyAccessor();

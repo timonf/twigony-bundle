@@ -3,6 +3,7 @@
 namespace Twigony\Bundle\FrameworkBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -288,5 +289,52 @@ class DoctrineORMController
         if (array_key_exists('flash', $options)) {
             $this->session->getFlashBag()->add($type, $options['flash']);
         }
+    }
+
+    /**
+     * @param array $options
+     * @param EntityRepository $repository
+     * @param int $page
+     * @param int $perPage If 0 all results will be returned
+     * @param int $pages
+     * @return mixed|array
+     */
+    protected function paginate(
+        array $options,
+        EntityRepository $repository,
+        int $page = 1,
+        int $perPage = 0,
+        int &$pages = 1
+    ) {
+        $page = abs($page - 1); // internally we start with a 0
+
+        if ($perPage > 0) {
+            $allEntities = $repository
+                ->createQueryBuilder('e')
+                ->select('COUNT(e)')
+                ->getQuery()
+                ->getScalarResult();
+
+            $pages = round($allEntities / $perPage, 0, PHP_ROUND_HALF_UP);
+        }
+
+        $result = $repository
+            ->createQueryBuilder('e')
+            ->select('e')
+            ->setFirstResult($perPage > 0 ? $perPage * $page : 0);
+
+        if (array_key_exists('orderBy', $options)) {
+            list($key, $direction) = $options['orderBy'];
+
+            $result->orderBy('e'.$key, strtoupper($direction) === 'DESC' ? 'DESC' : 'ASC');
+        }
+
+        if ($perPage > 0) {
+            $result->setMaxResults($perPage);
+        }
+
+        return $result
+            ->getQuery()
+            ->getResult();
     }
 }
