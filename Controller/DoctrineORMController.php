@@ -96,7 +96,7 @@ class DoctrineORMController
     public function viewAction(Request $request, $template, $entity, $options = []) : Response
     {
         $repository = $this->entityManager->getRepository($entity);
-        $id         = $request->query->get('id');
+        $id         = $request->get('id');
 
         $entityKey = array_key_exists('as', $options) ? $options['as'] : 'entity';
         $findOneBy = ['id' => $id];
@@ -141,17 +141,21 @@ class DoctrineORMController
      *                          - "as" (Default: "entities") -> can change the key of the result entities.
      * @return Response
      */
-    public function listAction(Request $request, $template, $entity, $options) : Response
+    public function listAction(Request $request, $template, $entity, $options = []) : Response
     {
+        $page = $request->get('page', 1);
+        $perPage = array_key_exists('perPage', $options) ? $options['perPage'] : 0;
+        $pages = 1;
         $repository = $this->entityManager->getRepository($entity);
-
-        $entities = $repository->findAll();
+        $entities = $this->paginate($options, $repository, $page, $perPage, $pages);
 
         $entitiesKey = array_key_exists('as', $options) ? $options['as'] : 'entities';
 
         $response = new Response($this->templateEngine->render($template, [
             'options' => $options,
             $entitiesKey => $entities,
+            'pages' => $pages,
+            'page' => $page
         ]));
 
         $this->applyCacheOptions($response, $options);
@@ -309,11 +313,11 @@ class DoctrineORMController
         $page = abs($page - 1); // internally we start with a 0
 
         if ($perPage > 0) {
-            $allEntities = $repository
+            $allEntities = (int)$repository
                 ->createQueryBuilder('e')
                 ->select('COUNT(e)')
                 ->getQuery()
-                ->getScalarResult();
+                ->getSingleScalarResult();
 
             $pages = round($allEntities / $perPage, 0, PHP_ROUND_HALF_UP);
         }

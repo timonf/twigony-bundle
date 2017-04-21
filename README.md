@@ -83,7 +83,6 @@ Usage
                 entity: 'AppBundle\Entity\Post'
                 options:
                     as: 'posts' # Access variable for your Twig template. You can use it this way `{% for post in posts %}…`
-                    form_class: 'AppBundle/Form/YourPostType' # If you want a custom form
 
 ### Show single entity (DoctrineORMController)
 
