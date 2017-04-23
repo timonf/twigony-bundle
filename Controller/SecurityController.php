@@ -23,7 +23,7 @@ class SecurityController
     public function __construct(
         EngineInterface $templateEngine,
         AuthenticationUtils $authenticationUtils
-    )  {
+    ) {
         $this->templateEngine = $templateEngine;
         $this->authenticationUtils = $authenticationUtils;
     }
