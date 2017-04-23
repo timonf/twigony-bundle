@@ -16,7 +16,7 @@ use Symfony\Component\Templating\EngineInterface;
 use Twigony\Bundle\FrameworkBundle\Form\AutomaticFormBuilder;
 
 /**
- * Twigony's Template Controller for Doctrine ORM Entities
+ * Twigony's DoctrineORM Controller for common tasks (show, list, edit, create)
  *
  * All controller actions can be used in the router definition without having any own controller.
  *

@@ -15,6 +15,13 @@ use Symfony\Component\Templating\EngineInterface;
 use Twigony\Bundle\FrameworkBundle\Form\AutomaticFormBuilder;
 use Twigony\Bundle\FrameworkBundle\Mailer\EmailFactory;
 
+/**
+ * Twigony's SwiftMailer Controller to send form data as email
+ *
+ * All controller actions can be used in the router definition without having any own controller.
+ *
+ * @author Timon F <dev@timonf.de>
+ */
 class SwiftMailerController
 {
     use CacheTrait;

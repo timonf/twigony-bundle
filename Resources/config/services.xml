@@ -29,6 +29,10 @@
             <argument type="service" id="mailer" />
             <argument type="service" id="doctrine.orm.default_entity_manager" />
         </service>
+        <service id="twigony.security_controller" class="Twigony\Bundle\FrameworkBundle\Controller\Security">
+            <argument type="service" id="templating" />
+            <argument type="service" id="security.authentication_utils" />
+        </service>
         <service id="twigony.template_controller" class="Twigony\Bundle\FrameworkBundle\Controller\TemplateController">
             <argument type="service" id="templating" />
         </service>
