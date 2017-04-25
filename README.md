@@ -1,5 +1,5 @@
-WIP {{ Twigony FrameworkBundle }}
-=================================
+{{ Twigony FrameworkBundle }}
+=============================
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/a20684cb-83aa-486f-8bec-e0a4cd3ae307/mini.png)](https://insight.sensiolabs.com/projects/a20684cb-83aa-486f-8bec-e0a4cd3ae307)
 
@@ -13,7 +13,7 @@ Goals of Twigony:
  * Usable for fast prototyping
  * Usable for simple pages
  * Much more frontend code (Twig) and less backend code (PHP/Symfony)
- * Covers common use cases (database listing, email –todo–…)
+ * Covers common use cases (database listing, email…)
 
 ---------------------------------------
 
@@ -53,8 +53,17 @@ class AppKernel extends Kernel
 }
 ```
 
-Usage
------
+Documentation
+-------------
+
+ * [TemplateController](Resources/doc/TemplateController.md) for static pages (`_controller: twigony.template_controller:templateAction`)
+ * [SecurityController](Resources/doc/SecurityController.md) for login page (`_controller: twigony.security_controller:loginAction`)
+ * [SwiftMailerController](Resources/doc/SwiftMailerController.md) for email forms (`_controller: twigony.mailer_controller:emailAction`)
+ * [DoctrineORMController](Resources/doc/DoctrineORMController.md) for database operations (`_controller: twigony.template_controller:*`)
+
+
+Example usages
+--------------
 
 ### Multiple static pages (TemplateController)
 
@@ -99,9 +108,3 @@ Usage
                 entity:   'AppBundle\Entity\Post'
                 options:
                     as: 'post' # Access variable for your Twig template. You can use it this way `{{ post.title }}…`
-
-
-Full documentation
-------------------
-
- * [TemplateController](Resources/doc/TemplateController.md) for static pages (`_controller: twigony.template_controller:templateAction`)
