@@ -11,6 +11,11 @@
         <service id="twigony.mail_factory" class="Twigony\Bundle\FrameworkBundle\Mailer\EmailFactory" public="false">
             <argument type="service" id="templating" />
         </service>
+        <service id="twigony.controller_listener" class="Twigony\Bundle\FrameworkBundle\EventListener\ControllerListener">
+            <argument type="service" id="security.authorization_checker" />
+            <argument type="service" id="event_dispatcher" />
+            <tag name="kernel.event_listener" event="kernel.request" priority="-512" />
+        </service>
         <service id="twigony.orm_controller" class="Twigony\Bundle\FrameworkBundle\Controller\DoctrineORMController">
             <argument type="service" id="twigony.automatic_form_builder" />
             <argument type="service" id="templating" />

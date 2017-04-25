@@ -37,7 +37,7 @@
   },
   "scripts": {
     "phpunit": "vendor/bin/phpunit",
-    "psr2": "vendor/bin/phpcs --standard=PSR2 Controller DependencyInjection Form Mailer Tests Resources TwigonyFrameworkBundle.php",
+    "psr2": "vendor/bin/phpcs --standard=PSR2 Controller DependencyInjection EventListener Form Mailer Tests Resources TwigonyFrameworkBundle.php",
     "install-hook": [
       "echo '#!/bin/sh' >> .git/hooks/pre-commit",
       "echo 'composer run phpunit' >> .git/hooks/pre-commit",
