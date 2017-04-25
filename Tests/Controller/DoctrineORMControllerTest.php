@@ -11,8 +11,10 @@
 
 namespace Twigony\Bundle\FrameworkBundle\Tests\Controller;
 
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,6 +46,37 @@ class DoctrineORMControllerTest extends TestCase
             public $title = 'Bar';
         };
 
+        $query = $this
+            ->getMockBuilder(AbstractQuery::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $query->expects($this->any())
+            ->method('getSingleScalarResult')
+            ->will($this->returnValue(2));
+        $query->expects($this->any())
+            ->method('getResult')
+            ->will($this->returnValue([$blogPost1, $blogPost2]));
+
+        $queryBuilder = $this
+            ->getMockBuilder(QueryBuilder::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $queryBuilder->expects($this->any())
+            ->method('select')
+            ->will($this->returnValue($queryBuilder));
+        $queryBuilder->expects($this->any())
+            ->method('setFirstResult')
+            ->will($this->returnValue($queryBuilder));
+        $queryBuilder->expects($this->any())
+            ->method('setMaxResults')
+            ->will($this->returnValue($queryBuilder));
+        $queryBuilder->expects($this->any())
+            ->method('orderBy')
+            ->will($this->returnValue($queryBuilder));
+        $queryBuilder->expects($this->any())
+            ->method('getQuery')
+            ->will($this->returnValue($query));
+
         // Post Repository
         $blogPostRepository = $this
             ->getMockBuilder(EntityRepository::class)
@@ -58,6 +91,9 @@ class DoctrineORMControllerTest extends TestCase
         $blogPostRepository->expects($this->any())
             ->method('findOneBy')
             ->will($this->returnValue($blogPost1));
+        $blogPostRepository->expects($this->any())
+            ->method('createQueryBuilder')
+            ->will($this->returnValue($queryBuilder));
 
         // Entity Manager
         $entityManager = $this
