@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of Twigony.
+ *
+ * © Timon F <dev@timonf.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Twigony\Bundle\FrameworkBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -36,14 +45,6 @@ class TemplateController
 
     /**
      * Displays static pages. You can use an optional placeholder to reuse the route easily.
-     *
-     * <code># routing.yml
-     *   page:
-     *     path: '/info/{page}' # You can use the page parameter in template file name, too!
-     *     defaults:
-     *       _controller: 'twigony.template_controller:templateAction'
-     *       template: 'static/{page}.html.twig' # You can use the placeholder page here
-     * </code>
      *
      * @param Request $request
      * @param string  $template Template path and file name. You can use the "page" parameter here. So you can

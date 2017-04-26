@@ -127,7 +127,7 @@ post_edit: # Name of your route, should be unique
 
 | Parameter         | Required  | Purpose           | Description                                                      |
 | ----------------- | --------- | ----------------- | ---------------------------------------------------------------- |
-| `path`            | yes       | Routing           | Default Symfony Parameter, you can use {page} as parameter here  |
+| `path`            | yes       | Routing           | Default Symfony Parameter                                        |
 | `_controller`     | yes       | Routing           | Default Symfony Parameter                                        |
 | `template`        | yes       | Twigony           | Path of the Twig template (should be located at `app/views`)     |
 | `entity`          | yes       | Twigony           | Full class name of entity/data model to work with                |
@@ -140,8 +140,8 @@ post_edit: # Name of your route, should be unique
 | `private`         | no        | Caching           | Whether or not caching should apply for client caches only       |
 
 
-Create an entity (editAction)
------------------------------
+Create an entity (createAction)
+-------------------------------
 
 Creates a new entity. Useful for feedback, comment or participant forms.
 
@@ -157,7 +157,7 @@ You need:
 post_create: # Name of your route, should be unique
     path: '/blog/create-post'
     defaults:
-        _controller: 'twigony.orm_controller:editAction'
+        _controller: 'twigony.orm_controller:createAction'
         template:    'post/edit.html.twig'
         entity:      'AppBundle\Entity\Post'
         options:
@@ -174,7 +174,7 @@ post_create: # Name of your route, should be unique
 
 | Parameter         | Required  | Purpose           | Description                                                      |
 | ----------------- | --------- | ----------------- | ---------------------------------------------------------------- |
-| `path`            | yes       | Routing           | Default Symfony Parameter, you can use {page} as parameter here  |
+| `path`            | yes       | Routing           | Default Symfony Parameter                                        |
 | `_controller`     | yes       | Routing           | Default Symfony Parameter                                        |
 | `template`        | yes       | Twigony           | Path of the Twig template (should be located at `app/views`)     |
 | `entity`          | yes       | Twigony           | Full class name of entity/data model to work with                |

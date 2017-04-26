@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of Twigony.
+ *
+ * © Timon F <dev@timonf.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Twigony\Bundle\FrameworkBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -93,14 +102,14 @@ class SwiftMailerController
      * @param string  $template Template path and file name
      * @param string  $entity   Full class name of entity to create form from
      * @param array   $options  Additional configuration options. Following options are possible:
-     *                          - "form_class" (optional) -> Custom form. Otherwise form will be created for you
+     *                          - "formClass" (optional) -> Custom form. Otherwise form will be created for you
      *                          - "to" -> Receiver of email
      *                          - "subject" -> Subject of email
      *                          - "from" -> Sender of email
      *                          - "template" -> Template of email
      * @return Response
      */
-    public function emailAction(Request $request, $template, $entity, $options)
+    public function emailAction(Request $request, $template, $entity, $options) : Response
     {
         $form = $this->handleForm($options, $entity);
         $form->handleRequest($request);
@@ -108,7 +117,7 @@ class SwiftMailerController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->sendMail($options, $form->getData());
 
-            if (array_key_exists('persist', $options)) {
+            if (array_key_exists('persist', $options) && $this->entityManager instanceof EntityManagerInterface) {
                 $this->entityManager->persist($form->getData());
                 $this->entityManager->flush();
             }
@@ -135,7 +144,7 @@ class SwiftMailerController
      * @param mixed $data    data to add to the email template
      * @return \Swift_Message
      */
-    protected function sendMail($options, $data)
+    protected function sendMail($options, $data) : \Swift_Message
     {
         if (!array_key_exists('subject', $options)) {
             throw new \InvalidArgumentException(sprintf('Please provide a "subject" to send an email.'));
@@ -173,14 +182,14 @@ class SwiftMailerController
      * @param object $entity  Instance of an given entity - or "null"
      * @return FormInterface
      */
-    protected function handleForm($options, $entity)
+    protected function handleForm($options, $entity) : FormInterface
     {
         if (null === $entity) {
             throw new NotFoundHttpException('Entity not found.');
         }
 
-        if (array_key_exists('form_class', $options)) {
-            return $this->formFactory->create($options['form_class']);
+        if (array_key_exists('formClass', $options)) {
+            return $this->formFactory->create($options['formClass']);
         } else {
             return $this->automaticFormBuilder->buildFormByClass($entity);
         }

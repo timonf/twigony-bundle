@@ -21,7 +21,7 @@ login: # Name of your route, should be unique
 
 | Parameter         | Required  | Purpose           | Description                                                      |
 | ----------------- | --------- | ----------------- | ---------------------------------------------------------------- |
-| `path`            | yes       | Routing           | Default Symfony Parameter, you can use {page} as parameter here  |
+| `path`            | yes       | Routing           | Default Symfony Parameter                                        |
 | `_controller`     | yes       | Routing           | Default Symfony Parameter                                        |
 | `template`        | yes       | Twigony           | Path of the Twig template (should be located at `app/views`)     |
 

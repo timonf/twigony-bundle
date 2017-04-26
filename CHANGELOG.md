@@ -1,12 +1,16 @@
 CHANGELOG
 =========
 
-master (initial version)
-------------------------
+Initial version (0.1)
+---------------------
 
+ * [Documentation] added documentation
+ * [ControllerListener] added for role checking in route
+ * [SecurityController] added `loginAction`
+ * [SwiftMailerController] added `emailAction`
+ * [DoctrineORMController] added `viewAction`, `listAction`, `editAction`, `editAction`
+ * [TemplateController] added `templateAction`
+ * [TemplateController] added tests for `templateAction`
  * [DoctrineORMController] added tests for `listAction` and `viewAction`
- * [DoctrineORMController] added `editAction` to edit one entity with auto-generated or custom form
- * [DoctrineORMController] added `listAction` to list all entries of an configured entity
- * [DoctrineORMController] added `viewAction` to display one specific configured entity
  * [AutomaticFormBuilder] added automatic Form builder (creates a very simple form by writeable attributes)
  * initialized project

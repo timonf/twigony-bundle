@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of Twigony.
+ *
+ * © Timon F <dev@timonf.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Twigony\Bundle\FrameworkBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -75,17 +84,6 @@ class DoctrineORMController
     /**
      * Displays a single entity.
      *
-     * <code># routing.yml
-     *   show_post:
-     *     path: '/post/{id}' # Make sure, you are using "id" as id parameter!
-     *     defaults:
-     *       _controller: 'twigony.orm_controller:viewAction'
-     *       template: 'post/show.html.twig'
-     *       entity:   'AppBundle\Entity\Post'
-     *       options:
-     *         as: 'post' # Using this option you can use it like {{ post.id }} in your template.
-     * </code>
-     *
      * @param Request $request
      * @param string  $template Template path and file name
      * @param string  $entity   Full class name of entity to list
@@ -123,17 +121,6 @@ class DoctrineORMController
     /**
      * List all entries of an entity.
      *
-     * <code># routing.yml
-     *   blog_posts:
-     *     path: '/'
-     *     defaults:
-     *       _controller: 'twigony.orm_controller:listAction'
-     *       template: 'post/index.html.twig'
-     *       entity:   'AppBundle\Entity\Post'
-     *       options:
-     *         as: 'posts' # So you can use it like {% for post in posts %} in your template.
-     * </code>
-     *
      * @param Request $request
      * @param string  $template Template path and file name
      * @param string  $entity   Full class name of entity to list
@@ -166,24 +153,11 @@ class DoctrineORMController
     /**
      * Displays a form for an existing entity and can save them to database after submitting and validating.
      *
-     * <code># routing.yml
-     *   contact:
-     *     path: '/post/{id}/edit'
-     *     defaults:
-     *       _controller: 'twigony.orm_controller:editAction'
-     *       template: 'post/show.html.twig'
-     *       entity:   'AppBundle\Entity\Comment'
-     *       options:
-     *         form_class: 'AppBundle/Form/CommentType' # If you want a custom form
-     *         flash: 'Comment posted successfully! :)' # Flash message for "notice" bag
-     *         redirect: 'homepage' # Redirect after save was successful
-     * </code>
-     *
      * @param Request $request
      * @param string  $template Template path and file name
      * @param string  $entity   Full class name of entity to edit
      * @param array   $options  Additional configuration options. Following options are possible:
-     *                          - "form_class" (optional) -> Custom form. Otherwise form will be created for you
+     *                          - "formClass" (optional) -> Custom form. Otherwise form will be created for you
      *                          - "flash" (optional) -> Flash bag message on success (will be added as "notice")
      *                          - "redirect" (optional) -> Route to redirect after success
      * @return Response
@@ -219,29 +193,16 @@ class DoctrineORMController
     /**
      * Displays a form for an entity and can save them to database after submitting and validating.
      *
-     * <code># routing.yml
-     *   contact:
-     *     path: '/post/{id}/edit'
-     *     defaults:
-     *       _controller: 'twigony.orm_controller:editAction'
-     *       template: 'post/show.html.twig'
-     *       entity:   'AppBundle\Entity\Comment'
-     *       options:
-     *         form_class: 'AppBundle/Form/CommentType' # If you want a custom form
-     *         flash: 'Comment posted successfully! :)' # Flash message for "notice" bag
-     *         redirect: 'homepage' # Redirect after save was successful
-     * </code>
-     *
      * @param Request $request
      * @param string  $template Template path and file name
      * @param string  $entity   Full class name of entity to edit
      * @param array   $options  Additional configuration options. Following options are possible:
-     *                          - "form_class" (optional) -> Custom form. Otherwise form will be created for you
+     *                          - "formClass" (optional) -> Custom form. Otherwise form will be created for you
      *                          - "flash" (optional) -> Flash bag message on success (will be added as "notice")
      *                          - "redirect" (optional) -> Route to redirect after success
      * @return Response
      */
-    public function createAction(Request $request, $template, $entity, $options)
+    public function createAction(Request $request, $template, $entity, $options) : Response
     {
         $form = $this->handleForm($options, new $entity());
         $form->handleRequest($request);
@@ -271,14 +232,14 @@ class DoctrineORMController
      * @param object $entity  Instance of an given entity - or "null"
      * @return FormInterface
      */
-    protected function handleForm($options, $entity)
+    protected function handleForm($options, $entity) : FormInterface
     {
         if (null === $entity) {
             throw new NotFoundHttpException('Entity not found.');
         }
 
-        if (array_key_exists('form_class', $options)) {
-            return $this->formFactory->create($options['form_class'], $entity);
+        if (array_key_exists('formClass', $options)) {
+            return $this->formFactory->create($options['formClass'], $entity);
         } else {
             return $this->automaticFormBuilder->buildFormByClass($entity);
         }
@@ -319,7 +280,7 @@ class DoctrineORMController
                 ->getQuery()
                 ->getSingleScalarResult();
 
-            $pages = round($allEntities / $perPage, 0, PHP_ROUND_HALF_UP);
+            $pages = ceil($allEntities / $perPage);
         }
 
         $result = $repository
@@ -330,7 +291,7 @@ class DoctrineORMController
         if (array_key_exists('orderBy', $options)) {
             list($key, $direction) = $options['orderBy'];
 
-            $result->orderBy('e'.$key, strtoupper($direction) === 'DESC' ? 'DESC' : 'ASC');
+            $result->orderBy('e.'.$key, strtoupper($direction) === 'DESC' ? 'DESC' : 'ASC');
         }
 
         if ($perPage > 0) {
