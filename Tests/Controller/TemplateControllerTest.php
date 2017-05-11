@@ -50,8 +50,7 @@ class TemplateControllerTest extends TestCase
 
     public function testTemplateAction()
     {
-        $request = Request::create('static', 'GET');
-        $response = $this->controller->templateAction($request, 'staticTemplate', null, [
+        $response = $this->controller->templateAction('staticTemplate', null, [
             'foo1' => 'bar2',
         ]);
 
@@ -62,8 +61,7 @@ class TemplateControllerTest extends TestCase
 
     public function testTemplateActionWithPublicCache()
     {
-        $request = Request::create('cached', 'GET');
-        $response = $this->controller->templateAction($request, 'cacheTemplate', null, [
+        $response = $this->controller->templateAction('cacheTemplate', null, [
             'maxAge' => '250',
         ]);
 
@@ -74,8 +72,7 @@ class TemplateControllerTest extends TestCase
 
     public function testTemplateActionWithPrivateCache()
     {
-        $request = Request::create('not-cached', 'GET');
-        $response = $this->controller->templateAction($request, 'dontCacheTemplate', null, [
+        $response = $this->controller->templateAction('dontCacheTemplate', null, [
             'private' => true,
         ]);
 
@@ -86,8 +83,7 @@ class TemplateControllerTest extends TestCase
     public function testTemplateActionWithNotExistingTemplate()
     {
         $this->expectException(NotFoundHttpException::class);
-        $request = Request::create('/someRandomPage', 'GET');
-        $this->controller->templateAction($request, '404');
+        $this->controller->templateAction('404');
     }
 
     /**
@@ -95,8 +91,7 @@ class TemplateControllerTest extends TestCase
      */
     public function testTemplateActionWithDynamicPageParameter($page)
     {
-        $request = Request::create('info/' . $page, 'GET');
-        $response = $this->controller->templateAction($request, 'views/{page}.ext', $page);
+        $response = $this->controller->templateAction('views/{page}.ext', $page);
 
         $this->assertContains('Template name: views/' . $page . '.ext', $response->getContent());
     }
