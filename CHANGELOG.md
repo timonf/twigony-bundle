@@ -1,8 +1,13 @@
 CHANGELOG
 =========
 
-Initial version (0.1)
----------------------
+0.9.1
+-----
+
+ * [SecurityController] Misspelled configuration
+
+Initial version (0.9.0)
+-----------------------
 
  * [Documentation] added documentation
  * [ControllerListener] added for role checking in route
