@@ -24,6 +24,11 @@ use Symfony\Component\Templating\EngineInterface;
  */
 class SecurityController
 {
+     /**
+      * @var tTmplateEngine
+      */
+     private $templateEngine; 
+    
     /**
      * @var AuthenticationUtils
      */
