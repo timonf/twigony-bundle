@@ -25,7 +25,7 @@ use Symfony\Component\Templating\EngineInterface;
 class SecurityController
 {
      /**
-      * @var TemplateEngine
+      * @var EngineInterface
       */
      private $templateEngine; 
     
