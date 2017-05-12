@@ -31,17 +31,17 @@ trait CacheTrait
      */
     protected function applyCacheParameters(Response $response, $maxAge, $sharedAge, $private)
     {
-        if ($maxAge) {
+        if ($maxAge !== null) {
             $response->setMaxAge($maxAge);
         }
 
-        if ($sharedAge) {
+        if ($sharedAge !== null) {
             $response->setSharedMaxAge($sharedAge);
         }
 
         if ($private) {
             $response->setPrivate();
-        } elseif ($private === false || (null === $private && ($maxAge || $sharedAge))) {
+        } elseif ($private === false || (null === $private && ($maxAge !== null || $sharedAge !== null))) {
             $response->setPublic();
         }
     }
